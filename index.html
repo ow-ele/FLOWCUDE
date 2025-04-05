@@ -1,21 +1,34 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>发光魔方</title>
-    <link rel="stylesheet" href="style.css">
+    <title>增量魔方</title>
+    <style>body { margin:0 } canvas { display:block }</style>
+    <script src="https://unpkg.com/three@0.132.2/build/three.min.js"></script>
 </head>
 <body>
-    <div id="loader">加载中...</div>
-    <div id="mobile-controls">
-        <button class="control-btn" id="rotate-left">↻</button>
-        <button class="control-btn" id="rotate-right">↺</button>
-    </div>
-    
-    <!-- 使用稳定的CDN资源 -->
-    <script src="https://unpkg.com/three@0.132.2/build/three.min.js"></script>
-    <script src="https://unpkg.com/three@0.132.2/examples/js/controls/OrbitControls.min.js"></script>
-    <script src="script.js"></script>
+    <script>
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, innerWidth/innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(innerWidth, innerHeight);
+        document.body.appendChild(renderer.domElement);
+        
+        const geometry = new THREE.BoxGeometry();
+        const material = new THREE.MeshBasicMaterial({ 
+            color: 0x00ff00,
+            wireframe: true
+        });
+        const cube = new THREE.Mesh(geometry, material);
+        scene.add(cube);
+        camera.position.z = 5;
+        
+        function animate() {
+            requestAnimationFrame(animate);
+            cube.rotation.x += 0.01;
+            cube.rotation.y += 0.01;
+            renderer.render(scene, camera);
+        }
+        animate();
+    </script>
 </body>
 </html>
